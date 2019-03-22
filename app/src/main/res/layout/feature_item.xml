@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/featured_item_padding"
+    android:paddingEnd="@dimen/featured_item_padding"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/ivFeatureItem"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/feature_image"
+        android:foreground="@drawable/ripple_mask_white"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:background="@drawable/cell_gradient_shim"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/ivFeatureItem"
+        app:layout_constraintEnd_toEndOf="@id/ivFeatureItem"
+        app:layout_constraintStart_toStartOf="@id/ivFeatureItem"
+        app:layout_constraintTop_toTopOf="@id/ivFeatureItem" />
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:id="@+id/featureTitle"
+        android:layout_width="0.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_unit_small"
+        android:layout_marginBottom="@dimen/spacing_unit_xl"
+        android:lineSpacingMultiplier="1.04"
+        android:paddingStart="@dimen/spacing_unit_xl"
+        android:paddingEnd="@dimen/spacing_unit_xl"
+        app:layout_constraintBottom_toBottomOf="@id/ivFeatureItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/text.extrabold.1" />
+
+</android.support.constraint.ConstraintLayout>

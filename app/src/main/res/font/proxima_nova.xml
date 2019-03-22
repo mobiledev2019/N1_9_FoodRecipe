@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family
+  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <font app:font="@font/proximanova_reg" app:fontStyle="normal" app:fontWeight="400" />
+    <font app:font="@font/proximanova_thin" app:fontStyle="normal" app:fontWeight="100" />
+    <font app:font="@font/proximanova_light_webfont" app:fontStyle="normal" app:fontWeight="300" />
+    <font app:font="@font/proximanova_sbold" app:fontStyle="normal" app:fontWeight="600" />
+    <font app:font="@font/proximanova_xbold" app:fontStyle="normal" app:fontWeight="600" />
+</font-family>

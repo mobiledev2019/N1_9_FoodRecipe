@@ -1,0 +1,50 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.Recipe" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white_100</item>
+        <item name="colorPrimaryDark">@color/white_070</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/black_014</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="text">
+        <item name="android:textColor">@color/default_text_color_black</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="fontFamily">@font/proxima_nova</item>
+    </style>
+    <style name="text.extrabold" parent="@style/text">
+        <item name="fontFamily">@font/proximanova_xbold</item>
+    </style>
+    <style name="text.extrabold.1">
+        <item name="android:textSize">@dimen/text_size_28</item>
+        <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+    <style name="text.extrabold.3" parent="@style/text.extrabold">
+        <item name="android:textSize">@dimen/text_size_20</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+    <style name="text.extrabold.4" parent="@style/text.extrabold">
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+    <style name="text.extrabold.5" parent="@style/text.extrabold">
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+    <style name="ErrorView.ButtonContainer" parent="">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">24.0dip</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:foreground">@drawable/ripple_mask_white</item>
+    </style>
+</resources>

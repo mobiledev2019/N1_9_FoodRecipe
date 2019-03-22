@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Food Recipe</string>
+    <string name="search">Search</string>
+    <string name="feature_image">feature image</string>
+    <string name="demo_title">DEMO TITLE</string>
+    <string name="recent">Recent</string>
+    <string name="result">Result</string>
+    <string name="no_search_match">"Sorry! We can't find any recipes that match this search."</string>
+    <string name="clear_search">CLEAR SEARCH</string>
+    <string name="offline_warn">It look like you\'re offline.</string>
+    <string name="search_hint">search</string>
+    <string name="profile">Profile</string>
+    <string name="step_by_step_button_title">Step-by-step mode</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="recipe_page_preparation_title">Preparation</string>
+    <string name="favorite">favorite</string>
+    <string name="share_button">share button</string>
+</resources>
