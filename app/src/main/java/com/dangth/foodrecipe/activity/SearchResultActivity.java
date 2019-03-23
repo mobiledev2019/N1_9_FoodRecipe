@@ -151,6 +151,11 @@ public class SearchResultActivity extends AppCompatActivity implements
                 }
             }
         }
+        else {
+            noMatchLayout.setVisibility(View.VISIBLE);
+            adapter.setRecipeList(null);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
