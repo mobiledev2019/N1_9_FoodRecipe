@@ -51,7 +51,7 @@
                         android:layout_marginBottom="@dimen/spacing_unit_small" />
                     <include
                         layout="@layout/no_match_view"
-                        android:visibility="invisible"/>
+                        android:visibility="gone"/>
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
