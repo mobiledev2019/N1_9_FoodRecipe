@@ -126,4 +126,11 @@ public class RecipeActivity extends AppCompatActivity {
         super.finish();
         player.release();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        player.setPlayWhenReady(false);
+        playerView.showController();
+    }
 }
