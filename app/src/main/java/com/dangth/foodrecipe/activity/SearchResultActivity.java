@@ -44,7 +44,7 @@ public class SearchResultActivity extends AppCompatActivity implements
         swipeRefreshLayout.setRefreshing(true);
         Intent intent = getIntent();
         searchQuery = intent.getStringExtra(SearchViewQuery.SEARCH_QUERY);
-        Toast.makeText(this, searchQuery, Toast.LENGTH_SHORT).show();
+        searchView.setSearchText(searchQuery);
         loadSearchData();
     }
 
