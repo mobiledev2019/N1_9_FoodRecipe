@@ -15,4 +15,5 @@
     <string name="recipe_page_preparation_title">Preparation</string>
     <string name="favorite">favorite</string>
     <string name="share_button">share button</string>
+    <string name="compilation_text">Recipes in this video</string>
 </resources>

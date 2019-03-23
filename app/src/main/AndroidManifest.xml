@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.CompilationActivity"></activity>
+        <activity
+            android:name=".activity.CompilationActivity"
+            android:theme="@style/AppTheme.Recipe"/>
         <activity android:name=".activity.InstructionPagerActivity" />
         <activity
             android:name=".activity.RecipeActivity"

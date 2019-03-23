@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     compilation.setThumbnail_url(featureItem.getThumbnail_url());
                     compilation.setName(featureItem.getName());
                     compilation.setVideo_url(featureItem.getVideo_url());
-                    intent.putExtra(RecipeListAdapter.INTENT_RECIPE_ACTIVITY, (Parcelable) compilation);
+                    intent.putExtra(RecipeListAdapter.INTENT_COMPILATION_ACTIVITY, (Parcelable) compilation);
                     startActivity(intent);
                 }
                 break;
