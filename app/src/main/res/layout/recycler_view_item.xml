@@ -2,6 +2,8 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="false"
+    android:clipChildren="false"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
@@ -20,6 +22,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:background="@drawable/cell_gradient_shim"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/ivItem"
+        app:layout_constraintEnd_toEndOf="@id/ivItem"
+        app:layout_constraintStart_toStartOf="@id/ivItem"
+        app:layout_constraintTop_toTopOf="@id/ivItem" />
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/spark_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivItem"
+        app:layout_constraintEnd_toEndOf="@id/ivItem"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@id/ivItem"
+        app:sparkbutton_activeImage="@drawable/ic_bottom_favorite_active"
+        app:sparkbutton_iconSize="20dp"
+        app:sparkbutton_inActiveImage="@drawable/ic_bottom_favorite_inactive"
+        app:sparkbutton_primaryColor="@color/heart_primary_color"
+        app:sparkbutton_secondaryColor="@color/heart_secondary_color" />
 
     <TextView
         android:id="@+id/tvRecipeTitle"
