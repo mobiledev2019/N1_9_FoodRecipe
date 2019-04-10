@@ -7,14 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dangth.foodrecipe.GlideApp;
 import com.dangth.foodrecipe.R;
@@ -70,33 +69,42 @@ public class RecipeActivity extends AppCompatActivity {
         tvTitleCollapse.setText(recipe.getName());
 
         /* ExoPlayer */
-        playerView = findViewById(R.id.videoSurfaceContainer);
-        playerView.setControllerAutoShow(false);
-        player = ExoPlayerFactory.newSimpleInstance(this);
-        DataSource.Factory dataFactory = new DefaultDataSourceFactory(this,  Util.getUserAgent(this, "FoodRecipe"));
-        HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataFactory).createMediaSource(Uri.parse(recipe.getVideo_url()));
-        player.prepare(mediaSource,true, false);
-        player.setPlayWhenReady(true);
-        player.addListener(new Player.EventListener() {
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == Player.STATE_READY) {
-                    if (thumbnail.getVisibility() == View.VISIBLE) {
-                        thumbnail.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.GONE);
+        if (isVideoUrlNotNullOrEmpty()) {
+            playerView = findViewById(R.id.videoSurfaceContainer);
+            playerView.setControllerAutoShow(false);
+            player = ExoPlayerFactory.newSimpleInstance(this);
+            DataSource.Factory dataFactory = new DefaultDataSourceFactory(this,  Util.getUserAgent(this, "FoodRecipe"));
+            HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataFactory).createMediaSource(Uri.parse(recipe.getVideo_url()));
+            player.prepare(mediaSource,true, false);
+            player.setPlayWhenReady(true);
+            player.addListener(new Player.EventListener() {
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if (playbackState == Player.STATE_READY) {
+                        if (thumbnail.getVisibility() == View.VISIBLE) {
+                            thumbnail.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                        }
                     }
                 }
-            }
-        });
-        playerView.setPlayer(player);
+            });
+            playerView.setPlayer(player);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
 
         /* Button StepView */
         Button button = findViewById(R.id.stepByStepButton);
         button.setOnClickListener(view -> {
-            player.setPlayWhenReady(false);
-            playerView.showController();
-            Intent intent = new Intent(RecipeActivity.this, InstructionPagerActivity.class);
-            startActivity(intent);
+            if (isVideoUrlNotNullOrEmpty()) {
+                player.setPlayWhenReady(false);
+                playerView.showController();
+                Intent intent = new Intent(RecipeActivity.this, InstructionPagerActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(RecipeActivity.this, "Step-view is not available for this recipe", Toast.LENGTH_SHORT).show();
+            }
         });
 
         /*RecyclerView - Instruction Adapter */
@@ -110,8 +118,10 @@ public class RecipeActivity extends AppCompatActivity {
         /* Ingredient Button */
         Button btnIngredient = findViewById(R.id.btnIngredient);
         btnIngredient.setOnClickListener(view -> {
-            player.setPlayWhenReady(false);
-            playerView.showController();
+            if (isVideoUrlNotNullOrEmpty()) {
+                player.setPlayWhenReady(false);
+                playerView.showController();
+            }
             IngredientSheetFragment bottomSheetFragment = IngredientSheetFragment.newInstance((ArrayList<Section>) recipe.getSections());
             bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
         });
@@ -120,17 +130,23 @@ public class RecipeActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> finish());
     }
-
+    private boolean isVideoUrlNotNullOrEmpty() {
+        return recipe.getVideo_url() != null && !recipe.getVideo_url().isEmpty();
+    }
     @Override
     public void finish() {
         super.finish();
-        player.release();
+        if (isVideoUrlNotNullOrEmpty()) {
+            player.release();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        player.setPlayWhenReady(false);
-        playerView.showController();
+        if (isVideoUrlNotNullOrEmpty()) {
+            player.setPlayWhenReady(false);
+            playerView.showController();
+        }
     }
 }
