@@ -2,6 +2,7 @@ package com.dangth.foodrecipe.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -33,7 +34,7 @@ public class IngredientSheetFragment extends BottomSheetDialogFragment {
     public static IngredientSheetFragment newInstance(ArrayList<Section> sections) {
         IngredientSheetFragment ingredientSheetFragment = new IngredientSheetFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("in", sections);
+        bundle.putParcelableArrayList("in", sections);
         ingredientSheetFragment.setArguments(bundle);
         return ingredientSheetFragment;
     }
@@ -41,7 +42,7 @@ public class IngredientSheetFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
-            sections = (List<Section>) getArguments().getSerializable("in");
+            sections = getArguments().getParcelableArrayList("in");
         }
     }
 
