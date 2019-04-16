@@ -1,10 +1,13 @@
 package com.dangth.foodrecipe.services.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Unit implements Serializable {
+public class Unit implements Serializable, Parcelable {
 
     public static final String UNIT_METRIC = "metric";
     public static final String UNIT_IMPERIAL = "imperial";
@@ -77,4 +80,38 @@ public class Unit implements Serializable {
                 ", system='" + system + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.abbreviation);
+        dest.writeString(this.display_singular);
+        dest.writeString(this.display_plural);
+        dest.writeString(this.system);
+    }
+
+    protected Unit(Parcel in) {
+        this.name = in.readString();
+        this.abbreviation = in.readString();
+        this.display_singular = in.readString();
+        this.display_plural = in.readString();
+        this.system = in.readString();
+    }
+
+    public static final Parcelable.Creator<Unit> CREATOR = new Parcelable.Creator<Unit>() {
+        @Override
+        public Unit createFromParcel(Parcel source) {
+            return new Unit(source);
+        }
+
+        @Override
+        public Unit[] newArray(int size) {
+            return new Unit[size];
+        }
+    };
 }

@@ -1,10 +1,13 @@
 package com.dangth.foodrecipe.services.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Ingredient implements Serializable {
+public class Ingredient implements Serializable, Parcelable {
     @SerializedName("id")
     private long id;
     @SerializedName("name")
@@ -70,4 +73,43 @@ public class Ingredient implements Serializable {
     public void setUpdated_at(long updated_at) {
         this.updated_at = updated_at;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.display_singular);
+        dest.writeString(this.display_plural);
+        dest.writeLong(this.created_at);
+        dest.writeLong(this.updated_at);
+    }
+
+    public Ingredient() {
+    }
+
+    protected Ingredient(Parcel in) {
+        this.id = in.readLong();
+        this.name = in.readString();
+        this.display_singular = in.readString();
+        this.display_plural = in.readString();
+        this.created_at = in.readLong();
+        this.updated_at = in.readLong();
+    }
+
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel source) {
+            return new Ingredient(source);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 }
