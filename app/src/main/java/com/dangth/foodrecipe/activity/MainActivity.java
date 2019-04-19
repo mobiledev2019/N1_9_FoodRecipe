@@ -1,6 +1,8 @@
 package com.dangth.foodrecipe.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
@@ -12,8 +14,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,6 +25,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.dangth.foodrecipe.GlideApp;
 import com.dangth.foodrecipe.R;
 import com.dangth.foodrecipe.adapter.RecipeListAdapter;
+import com.dangth.foodrecipe.fragment.OptionDialogFragment;
 import com.dangth.foodrecipe.searchview.SuggestionHandler;
 import com.dangth.foodrecipe.services.FeedAPI;
 import com.dangth.foodrecipe.services.RetrofitClientInstance;
@@ -71,15 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-
-        MenuItem item = menu.findItem(R.id.action_search);
-
-        return true;
-    }
-    @Override
     public void onBackPressed() {
 
         super.onBackPressed();
@@ -104,6 +96,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         searchView = findViewById(R.id.floating_search_view);
         searchView.setOnSearchListener(new SearchViewQuery(MainActivity.this, searchView));
         searchView.setOnQueryChangeListener(new SuggestionHandler(searchView));
+        searchView.setOnMenuItemClickListener(item -> {
+            OptionDialogFragment optionDialogFragment = OptionDialogFragment.newInstance();
+            optionDialogFragment.show(getSupportFragmentManager(), optionDialogFragment.getTag());
+            optionDialogFragment.setOnDialogDismissListener(() -> {
+                swipeRefreshLayout.setRefreshing(true);
+                loadFeedData();
+            });
+        });
 
         /* RecyclerView Recent */
         RecyclerView rvRecent = findViewById(R.id.rvRecent);
@@ -142,7 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      */
     public void loadFeedData() {
-        Call<FeedResponse> call = feedAPI.getFeedData();
+        SharedPreferences sharedPreferences = getSharedPreferences(OptionDialogFragment.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        boolean vegetarian = sharedPreferences.getBoolean(OptionDialogFragment.SHARED_PREFERENCES_VEGETARIAN, false);
+        Call<FeedResponse> call = feedAPI.getFeedData(vegetarian, 15, 0);
         call.enqueue(new Callback<FeedResponse>() {
             @Override
             public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
