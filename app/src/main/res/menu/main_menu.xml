@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/search_hint"
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/filter_hint"
         app:iconTint="@android:color/white"
         app:showAsAction="ifRoom" />
     <item

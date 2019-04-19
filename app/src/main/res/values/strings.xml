@@ -16,4 +16,6 @@
     <string name="favorite">favorite</string>
     <string name="share_button">share button</string>
     <string name="compilation_text">Recipes in this video</string>
+    <string name="filter_hint">Filter</string>
+    <string name="dietary_restriction">Dietary Restriction</string>
 </resources>
