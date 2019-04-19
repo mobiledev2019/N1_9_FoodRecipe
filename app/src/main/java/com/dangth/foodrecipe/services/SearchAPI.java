@@ -11,7 +11,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SearchAPI {
-    @GET("/search/recipes?from=10&size=10")
+    @GET("/search/recipes?from=0&size=10")
     @Headers("x-auth-token: 6e8bf895-59aa-444b-b846-beec53f0e007")
     Call<SearchRecipeResponse> searchRecipes(@Query("q") String query);
 
