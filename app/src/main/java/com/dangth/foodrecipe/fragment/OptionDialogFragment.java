@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class OptionDialogFragment extends DialogFragment {
         boolean vegetarian = sharedPreferences.getBoolean(SHARED_PREFERENCES_VEGETARIAN, false);
         rbVegetarianTrue.setChecked(vegetarian);
         rbVegetarianFalse.setChecked(!vegetarian);
+        this.vegetarian = vegetarian;
     }
 
     private void writeSharedData(boolean vegetarian) {
