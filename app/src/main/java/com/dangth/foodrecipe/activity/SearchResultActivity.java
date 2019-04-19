@@ -1,6 +1,8 @@
 package com.dangth.foodrecipe.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import com.arlib.floatingsearchview.FloatingSearchView;
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion;
 import com.dangth.foodrecipe.R;
 import com.dangth.foodrecipe.adapter.RecipeListAdapter;
+import com.dangth.foodrecipe.fragment.OptionDialogFragment;
 import com.dangth.foodrecipe.searchview.SearchViewQuery;
 import com.dangth.foodrecipe.searchview.SuggestionHandler;
 import com.dangth.foodrecipe.services.RetrofitClientInstance;
@@ -79,6 +82,14 @@ public class SearchResultActivity extends AppCompatActivity implements
         });
         searchView.setOnHomeActionClickListener(this::finish);
         searchView.setOnQueryChangeListener(new SuggestionHandler(searchView));
+        searchView.setOnMenuItemClickListener(item -> {
+            OptionDialogFragment optionDialogFragment = OptionDialogFragment.newInstance();
+            optionDialogFragment.show(getSupportFragmentManager(), optionDialogFragment.getTag());
+            optionDialogFragment.setOnDialogDismissListener(() -> {
+               swipeRefreshLayout.setRefreshing(true);
+               loadSearchData();
+            });
+        });
 
         /* RecyclerView Recent */
         RecyclerView rvRecent = findViewById(R.id.rvRecent);
@@ -112,6 +123,11 @@ public class SearchResultActivity extends AppCompatActivity implements
      *
      */
     private void loadSearchData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(OptionDialogFragment.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        boolean vegetarian = sharedPreferences.getBoolean(OptionDialogFragment.SHARED_PREFERENCES_VEGETARIAN, false);
+        if (vegetarian) {
+            searchQuery = "_exists_:approved_at%20AND%20" + searchQuery + "%20AND%20tags.name:vegetarian";
+        }
         Call<SearchRecipeResponse> call = searchAPI.searchRecipes(searchQuery);
         call.enqueue(new Callback<SearchRecipeResponse>() {
             @Override
