@@ -81,7 +81,7 @@ public class CompilationActivity extends AppCompatActivity {
         /* RecyclerView */
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        RecipeListAdapter adapter = new RecipeListAdapter(compilation.getRecipes(), this);
+        RecipeListAdapter adapter = new RecipeListAdapter(compilation.getRecipes(), this, R.layout.recycler_view_item);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

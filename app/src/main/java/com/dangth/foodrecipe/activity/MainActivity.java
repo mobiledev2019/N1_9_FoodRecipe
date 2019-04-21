@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.arlib.floatingsearchview.FloatingSearchView;
 import com.dangth.foodrecipe.GlideApp;
 import com.dangth.foodrecipe.R;
+import com.dangth.foodrecipe.adapter.CarouselAdapter;
 import com.dangth.foodrecipe.adapter.RecipeListAdapter;
 import com.dangth.foodrecipe.fragment.OptionDialogFragment;
 import com.dangth.foodrecipe.searchview.SuggestionHandler;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SwipeRefreshLayout.OnRefreshListener, AppBarLayout.OnOffsetChangedListener {
     private FloatingSearchView searchView;
     private RecipeListAdapter adapter;
+    private CarouselAdapter carouselAdapter;
     private ImageView ibFeatureItem;
     private TextView tvFeatureTitle;
     private NestedScrollView nestedScrollView;
@@ -109,8 +112,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView rvRecent = findViewById(R.id.rvRecent);
         rvRecent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvRecent.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecipeListAdapter(this);
+        adapter = new RecipeListAdapter(this, R.layout.recycler_view_item);
         rvRecent.setAdapter(adapter);
+
+        /* RecyclerView Carousel*/
+        RecyclerView rvCarousel = findViewById(R.id.carouselList);
+        rvCarousel.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        rvCarousel.setItemAnimator(new DefaultItemAnimator());
+        carouselAdapter = new CarouselAdapter(this);
+        rvCarousel.setAdapter(carouselAdapter);
 
         /* NSV */
         nestedScrollView = findViewById(R.id.scrollMainView);
@@ -178,8 +188,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
 
     private void loadDataFeedView(FeedResponse feedResponse) {
+        Log.i("DEMO", "loadDataFeedView: load start");
         List<FeedResponse.FeedItem> feedItemList = feedResponse.getResults();
         List<Recipe> recipeList = new ArrayList<>();
+        List<FeedResponse.FeedItem> carouselList = new ArrayList<>();
+        Log.i("DEMO", "loadDataFeedView: " + feedItemList);
         for (FeedResponse.FeedItem feedItem : feedItemList) {
             if (feedItem.getContent()!=null) {
                 if (feedItem.getType().equals("featured")) {
@@ -194,6 +207,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else if (feedItem.getType().equals("item")) {
                     recipeList.add(feedItem.getContent());
                 }
+            } else if (feedItem.getCarouselItem() != null) {
+                carouselList.add(feedItem);
             }
         }
         if (nestedScrollView.getVisibility() == View.INVISIBLE) {
@@ -201,7 +216,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         adapter.setRecipeList(recipeList);
         adapter.notifyDataSetChanged();
-
+        carouselAdapter.setCarouselList(carouselList);
+        carouselAdapter.notifyDataSetChanged();
+        Log.i("DEMO", "loadDataFeedView: " + carouselAdapter.getItemCount());
     }
 
     @Override

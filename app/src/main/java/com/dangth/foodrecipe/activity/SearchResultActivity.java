@@ -95,7 +95,7 @@ public class SearchResultActivity extends AppCompatActivity implements
         RecyclerView rvRecent = findViewById(R.id.rvRecent);
         rvRecent.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         rvRecent.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecipeListAdapter(this);
+        adapter = new RecipeListAdapter(this, R.layout.recycler_view_item);
         rvRecent.setAdapter(adapter);
 
         /* SwipeRefreshLayout */
