@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 import com.dangth.foodrecipe.GlideApp;
 import com.dangth.foodrecipe.R;
 import com.dangth.foodrecipe.activity.CompilationActivity;
+import com.dangth.foodrecipe.activity.MainActivity;
 import com.dangth.foodrecipe.activity.RecipeActivity;
 import com.dangth.foodrecipe.services.model.Compilation;
 import com.dangth.foodrecipe.services.model.Recipe;
+import com.dangth.foodrecipe.utils.DpiUtils;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 import java.util.List;
@@ -26,14 +30,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public static final String INTENT_COMPILATION_ACTIVITY = "INTENT_COMPILATION_ACTIVITY";
     private List<Recipe> recipeList;
     private Context context;
+    private int layout;
 
-    public RecipeListAdapter(List<Recipe> recipeList, Context context) {
+    public RecipeListAdapter(List<Recipe> recipeList, Context context, int layout) {
         this.recipeList = recipeList;
         this.context = context;
+        this.layout = layout;
     }
 
-    public RecipeListAdapter(Context context) {
+    public RecipeListAdapter(Context context, int layout) {
         this.context = context;
+        this.layout = layout;
     }
 
     public void setRecipeList(List<Recipe> recipeList) {
@@ -49,7 +56,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = layoutInflater.inflate(R.layout.recycler_view_item, viewGroup, false);
+        View itemView = layoutInflater.inflate(layout, viewGroup, false);
         return new RecipeViewHolder(itemView);
     }
 
@@ -74,6 +81,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvRecipeTitle;
         ImageView ivRecipe;
+        ConstraintLayout constraintLayout;
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRecipeTitle = itemView.findViewById(R.id.tvRecipeTitle);
