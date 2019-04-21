@@ -14,15 +14,18 @@ public final class FeedResponse implements Serializable {
     public static final class FeedItem implements Serializable {
         @SerializedName("item")
         private final Recipe content;
+        @SerializedName("items")
+        private final List<Recipe> carouselItem;
         @SerializedName("name")
         private final String name;
         @SerializedName("type")
         private final String type;
 
-        public FeedItem(String str, String str2, Recipe obj) {
+        public FeedItem(String str, String str2, Recipe obj, List<Recipe> carouselItem) {
             this.type = str;
             this.name = str2;
             this.content = obj;
+            this.carouselItem = carouselItem;
         }
 
         public final String getType() {
@@ -37,10 +40,15 @@ public final class FeedResponse implements Serializable {
             return this.content;
         }
 
+        public List<Recipe> getCarouselItem() {
+            return carouselItem;
+        }
+
         @Override
         public String toString() {
             return "FeedItem{" +
                     "content=" + content +
+                    ", carouselItem=" + carouselItem +
                     ", name='" + name + '\'' +
                     ", type='" + type + '\'' +
                     '}';
