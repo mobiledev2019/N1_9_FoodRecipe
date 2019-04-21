@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:layout_marginStart="@dimen/padding_small"
+    android:layout_marginEnd="@dimen/padding_small">
+
+    <ImageView
+        android:id="@+id/ivItem"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="@dimen/spacing_unit_small"
+        android:foreground="@drawable/ripple_mask_white"
+        app:layout_constraintBottom_toTopOf="@+id/tvRecipeTitle"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:background="@drawable/cell_gradient_shim"
+        android:layout_width="0.0dip"
+        android:layout_height="0.0dip"
+        app:layout_constraintBottom_toBottomOf="@id/ivItem"
+        app:layout_constraintEnd_toEndOf="@id/ivItem"
+        app:layout_constraintStart_toStartOf="@id/ivItem"
+        app:layout_constraintTop_toTopOf="@id/ivItem" />
+
+    <com.varunest.sparkbutton.SparkButton
+        android:id="@+id/spark_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/ivItem"
+        app:layout_constraintEnd_toEndOf="@id/ivItem"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="@id/ivItem"
+        app:sparkbutton_activeImage="@drawable/ic_bottom_favorite_active"
+        app:sparkbutton_iconSize="20dp"
+        app:sparkbutton_inActiveImage="@drawable/ic_bottom_favorite_inactive"
+        app:sparkbutton_primaryColor="@color/heart_primary_color"
+        app:sparkbutton_secondaryColor="@color/heart_secondary_color" />
+    <TextView
+        android:id="@+id/tvRecipeTitle"
+        style="@style/text.extrabold.5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.16"
+        android:maxLines="3"
+        android:minLines="3"
+        android:paddingBottom="@dimen/spacing_unit_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivItem" />
+</android.support.constraint.ConstraintLayout>
