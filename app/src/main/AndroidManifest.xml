@@ -7,8 +7,6 @@
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -19,9 +17,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.UserActivity"></activity>
+        <activity android:name=".activity.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.CompilationActivity"
-            android:theme="@style/AppTheme.Recipe"/>
+            android:theme="@style/AppTheme.Recipe" />
         <activity android:name=".activity.InstructionPagerActivity" />
         <activity
             android:name=".activity.RecipeActivity"
@@ -29,13 +35,7 @@
         <activity
             android:name=".activity.SearchResultActivity"
             android:parentActivityName=".activity.MainActivity" />
-        <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.MainActivity"></activity>
     </application>
 
 </manifest>

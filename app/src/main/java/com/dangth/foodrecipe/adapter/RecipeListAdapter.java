@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,10 @@ import com.dangth.foodrecipe.activity.MainActivity;
 import com.dangth.foodrecipe.activity.RecipeActivity;
 import com.dangth.foodrecipe.services.model.Compilation;
 import com.dangth.foodrecipe.services.model.Recipe;
+import com.dangth.foodrecipe.utils.AsyncTaskLikeRecipe;
 import com.dangth.foodrecipe.utils.DpiUtils;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -66,6 +70,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         TextView tvRecipeTitle = recipeViewHolder.tvRecipeTitle;
         ImageView ivRecipe = recipeViewHolder.ivRecipe;
         tvRecipeTitle.setText(recipe.getName());
+        recipeViewHolder.sparkButton.setChecked(recipe.like);
         GlideApp.with(context)
                 .load(recipe.getThumbnail_url())
                 .transition(withCrossFade())
@@ -82,28 +87,45 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         TextView tvRecipeTitle;
         ImageView ivRecipe;
         ConstraintLayout constraintLayout;
+        SparkButton sparkButton;
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             tvRecipeTitle = itemView.findViewById(R.id.tvRecipeTitle);
             ivRecipe = itemView.findViewById(R.id.ivItem);
+            sparkButton = itemView.findViewById(R.id.spark_button);
             itemView.setOnClickListener(this);
+            sparkButton.setEventListener(new SparkEventListener() {
+                @Override
+                public void onEvent(ImageView imageView, boolean buttonState) {
+                    recipeList.get(getAdapterPosition()).like = buttonState;
+                    AsyncTaskLikeRecipe likeRecipeTask =
+                            new AsyncTaskLikeRecipe(recipeList.get(getAdapterPosition()), context.getFilesDir());
+                    likeRecipeTask.execute();
+                }
+
+                @Override
+                public void onEventAnimationEnd(ImageView imageView, boolean b) {
+
+                }
+
+                @Override
+                public void onEventAnimationStart(ImageView imageView, boolean b) {
+
+                }
+            });
         }
 
         @Override
         public void onClick(View v) {
             Recipe sendRecipe = recipeList.get(getAdapterPosition());
+            Log.i("CLICK_ON_ITEM", "onClick: " + sendRecipe);
             if (!sendRecipe.isComplition()) {
                 Intent intent = new Intent(context, RecipeActivity.class);
                 intent.putExtra(INTENT_RECIPE_ACTIVITY, (Parcelable) sendRecipe);
                 context.startActivity(intent);
             } else {
                 Intent intent = new Intent(context, CompilationActivity.class);
-                Compilation compilation = new Compilation();
-                compilation.setRecipes(sendRecipe.getRecipes());
-                compilation.setThumbnail_url(sendRecipe.getThumbnail_url());
-                compilation.setName(sendRecipe.getName());
-                compilation.setVideo_url(sendRecipe.getVideo_url());
-                intent.putExtra(INTENT_COMPILATION_ACTIVITY, (Parcelable) compilation);
+                intent.putExtra(INTENT_COMPILATION_ACTIVITY, (Parcelable) sendRecipe);
                 context.startActivity(intent);
             }
         }

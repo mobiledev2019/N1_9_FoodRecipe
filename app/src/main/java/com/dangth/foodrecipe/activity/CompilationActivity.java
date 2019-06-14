@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import com.dangth.foodrecipe.GlideApp;
 import com.dangth.foodrecipe.R;
 import com.dangth.foodrecipe.adapter.RecipeListAdapter;
 import com.dangth.foodrecipe.services.model.Compilation;
+import com.dangth.foodrecipe.services.model.Recipe;
+import com.dangth.foodrecipe.utils.AsyncTaskLikeRecipe;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -23,6 +26,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -31,7 +36,7 @@ public class CompilationActivity extends AppCompatActivity {
     private PlayerView playerView;
     private ImageView thumbnail;
     private ProgressBar progressBar;
-    private Compilation compilation;
+    private Recipe compilation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +90,34 @@ public class CompilationActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        /* Appbar Control */
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(view -> finish());
+
+        /* LikeButton */
+
+        SparkButton sparkButton = findViewById(R.id.spark_button);
+        sparkButton.setChecked(compilation.like);
+        sparkButton.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView imageView, boolean buttonState) {
+                compilation.like = buttonState;
+                AsyncTaskLikeRecipe likeRecipeTask =
+                        new AsyncTaskLikeRecipe(compilation, getFilesDir());
+                likeRecipeTask.execute();
+            }
+
+            @Override
+            public void onEventAnimationEnd(ImageView imageView, boolean b) {
+
+            }
+
+            @Override
+            public void onEventAnimationStart(ImageView imageView, boolean b) {
+
+            }
+        });
     }
 
     @Override

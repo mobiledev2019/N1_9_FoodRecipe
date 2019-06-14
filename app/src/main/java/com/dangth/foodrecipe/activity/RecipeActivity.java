@@ -22,6 +22,7 @@ import com.dangth.foodrecipe.adapter.RecipeListAdapter;
 import com.dangth.foodrecipe.fragment.IngredientSheetFragment;
 import com.dangth.foodrecipe.services.model.Recipe;
 import com.dangth.foodrecipe.services.model.Section;
+import com.dangth.foodrecipe.utils.AsyncTaskLikeRecipe;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -30,6 +31,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
 import java.util.ArrayList;
 
@@ -129,6 +132,30 @@ public class RecipeActivity extends AppCompatActivity {
         /* Appbar Control */
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(view -> finish());
+
+        /* LikeButton */
+
+        SparkButton sparkButton = findViewById(R.id.spark_button);
+        sparkButton.setChecked(recipe.like);
+        sparkButton.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView imageView, boolean buttonState) {
+                recipe.like = buttonState;
+                AsyncTaskLikeRecipe likeRecipeTask =
+                        new AsyncTaskLikeRecipe(recipe , getFilesDir());
+                likeRecipeTask.execute();
+            }
+
+            @Override
+            public void onEventAnimationEnd(ImageView imageView, boolean b) {
+
+            }
+
+            @Override
+            public void onEventAnimationStart(ImageView imageView, boolean b) {
+
+            }
+        });
     }
     private boolean isVideoUrlNotNullOrEmpty() {
         return recipe.getVideo_url() != null && !recipe.getVideo_url().isEmpty();
