@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.dangth.foodrecipe.R;
@@ -25,6 +26,10 @@ public class UserActivity extends AppCompatActivity {
 
         TextView tvTitle = findViewById(R.id.title);
         RecyclerView recyclerView = findViewById(R.id.rvCarousel);
+
+        /* Appbar Control */
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(view -> finish());
 
         tvTitle.setText("LIKE");
         RecipeListAdapter adapter = new RecipeListAdapter(this, R.layout.recycler_view_item);

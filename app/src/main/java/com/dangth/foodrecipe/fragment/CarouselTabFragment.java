@@ -47,6 +47,7 @@ public class CarouselTabFragment extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null && getContext() != null && getActivity() != null) {
             int pos = bundle.getInt(CTF_KEY);
+            if (((HomeActivity) getActivity()).carouselList == null) return;
             FeedResponse.FeedItem carousel = ((HomeActivity) getActivity()).carouselList.get(pos);
             recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Instruction implements Serializable {
+public class Instruction implements Serializable, Parcelable {
 
     @SerializedName("id")
     private long id;
@@ -74,4 +74,37 @@ public class Instruction implements Serializable {
                 '}';
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.displayText);
+        dest.writeValue(this.position);
+        dest.writeLong(this.startTime);
+        dest.writeLong(this.endTime);
+    }
+
+    protected Instruction(Parcel in) {
+        this.id = in.readLong();
+        this.displayText = in.readString();
+        this.position = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.startTime = in.readLong();
+        this.endTime = in.readLong();
+    }
+
+    public static final Parcelable.Creator<Instruction> CREATOR = new Parcelable.Creator<Instruction>() {
+        @Override
+        public Instruction createFromParcel(Parcel source) {
+            return new Instruction(source);
+        }
+
+        @Override
+        public Instruction[] newArray(int size) {
+            return new Instruction[size];
+        }
+    };
 }

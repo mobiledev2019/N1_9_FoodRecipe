@@ -28,7 +28,7 @@
         <activity
             android:name=".activity.CompilationActivity"
             android:theme="@style/AppTheme.Recipe" />
-        <activity android:name=".activity.InstructionPagerActivity" />
+        <activity android:name=".activity.StepViewActivity" />
         <activity
             android:name=".activity.RecipeActivity"
             android:theme="@style/AppTheme.Recipe" />

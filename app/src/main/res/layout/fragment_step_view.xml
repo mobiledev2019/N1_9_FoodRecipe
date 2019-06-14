@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/video_view" />
+
+    <TextView
+        android:id="@+id/stepText"
+        android:layout_marginTop="@dimen/spacing_unit_medium"
+        android:padding="@dimen/spacing_unit_small"
+        android:textColor="@color/default_text_color_black"
+        app:fontFamily="@font/proximanova_xbold"
+        android:textSize="@dimen/text_size_18"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

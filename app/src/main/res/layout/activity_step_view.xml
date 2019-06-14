@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:clipToPadding="false"
+    tools:context=".activity.StepViewActivity"
     android:clipChildren="false"
-    tools:context=".activity.UserActivity">
+    android:clipToPadding="false">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,8 +52,8 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:text="User preference"
                         android:layout_centerInParent="true"
+                        android:text="Step-View"
                         android:textColor="@color/default_text_color_black"
                         app:fontFamily="@font/proximanova_xbold"
                         android:textSize="@dimen/text_size_18"
@@ -66,42 +64,11 @@
             </android.support.v7.widget.Toolbar>
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.widget.NestedScrollView
-        android:clipToPadding="false"
-        android:clipChildren="false"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:textColor="@color/pink"
-                android:id="@+id/title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_unit_large"
-                android:layout_marginLeft="@dimen/spacing_unit_large"
-                android:layout_marginRight="@dimen/spacing_unit_large"
-                android:layout_marginBottom="@dimen/spacing_unit_small"
-                android:lineSpacingMultiplier="1.0"
-                android:textAllCaps="true"
-                style="@style/text.extrabold.5"
-                android:text="@string/recent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvCarousel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:clipChildren="false"
-                android:layout_marginTop="@dimen/spacing_unit_small"
-                android:layout_marginLeft="@dimen/spacing_unit_large"
-                android:layout_marginRight="@dimen/spacing_unit_large"
-                android:layout_marginBottom="@dimen/spacing_unit_small"
-                />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+    </android.support.v4.view.ViewPager>
+</android.support.design.widget.CoordinatorLayout>

@@ -3,6 +3,7 @@ package com.dangth.foodrecipe.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -102,7 +103,10 @@ public class RecipeActivity extends AppCompatActivity {
             if (isVideoUrlNotNullOrEmpty()) {
                 player.setPlayWhenReady(false);
                 playerView.showController();
-                Intent intent = new Intent(RecipeActivity.this, InstructionPagerActivity.class);
+                Intent intent = new Intent(RecipeActivity.this, StepViewActivity.class);
+                intent.putExtra("url", recipe.getVideo_url());
+                intent.putExtra("thumbnail", recipe.getThumbnail_url());
+                intent.putParcelableArrayListExtra("instruction",(ArrayList<? extends Parcelable>) recipe.getInstructions());
                 startActivity(intent);
             }
             else {
