@@ -1,6 +1,9 @@
 package com.dangth.foodrecipe.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -8,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -68,12 +72,17 @@ public class RecipeActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
+        if (isNetworkAvailable()){
+            Log.i("NETWORK", "Have internet");
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         /* TextView title */
         TextView tvTitleCollapse = findViewById(R.id.tvTitle);
         tvTitleCollapse.setText(recipe.getName());
 
         /* ExoPlayer */
-        if (isVideoUrlNotNullOrEmpty()) {
+        if (isVideoUrlNotNullOrEmpty() && isNetworkAvailable()) {
             playerView = findViewById(R.id.videoSurfaceContainer);
             playerView.setControllerAutoShow(false);
             player = ExoPlayerFactory.newSimpleInstance(this);
@@ -101,8 +110,10 @@ public class RecipeActivity extends AppCompatActivity {
         Button button = findViewById(R.id.stepByStepButton);
         button.setOnClickListener(view -> {
             if (isVideoUrlNotNullOrEmpty()) {
-                player.setPlayWhenReady(false);
-                playerView.showController();
+                if (playerView != null && player != null) {
+                    player.setPlayWhenReady(false);
+                    playerView.showController();
+                }
                 Intent intent = new Intent(RecipeActivity.this, StepViewActivity.class);
                 intent.putExtra("url", recipe.getVideo_url());
                 intent.putExtra("thumbnail", recipe.getThumbnail_url());
@@ -125,7 +136,7 @@ public class RecipeActivity extends AppCompatActivity {
         /* Ingredient Button */
         Button btnIngredient = findViewById(R.id.btnIngredient);
         btnIngredient.setOnClickListener(view -> {
-            if (isVideoUrlNotNullOrEmpty()) {
+            if (isVideoUrlNotNullOrEmpty() && player != null && playerView != null) {
                 player.setPlayWhenReady(false);
                 playerView.showController();
             }
@@ -160,14 +171,33 @@ public class RecipeActivity extends AppCompatActivity {
 
             }
         });
+
+        /* shareButton */
+
+        ImageView shareBtn = findViewById(R.id.shareButton);
+        shareBtn.setOnClickListener(view -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://tasty.co/recipe/" + recipe.slug);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        });
     }
     private boolean isVideoUrlNotNullOrEmpty() {
         return recipe.getVideo_url() != null && !recipe.getVideo_url().isEmpty();
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
     public void finish() {
         super.finish();
-        if (isVideoUrlNotNullOrEmpty()) {
+        if (isVideoUrlNotNullOrEmpty() && player != null) {
             player.release();
         }
     }
@@ -175,7 +205,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (isVideoUrlNotNullOrEmpty()) {
+        if (isVideoUrlNotNullOrEmpty() && player != null && playerView != null) {
             player.setPlayWhenReady(false);
             playerView.showController();
         }

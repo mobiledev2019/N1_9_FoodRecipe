@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         offlineText.setOnClickListener(v -> {
             FeedResponse feedResponse = FileUtils.readOfflineData(this);
             if (feedResponse != null) loadDataFeedView(feedResponse);
-            else Toast.makeText(this, "Error reading file", Toast.LENGTH_SHORT).show();
+            else Toast.makeText(this, "Offline data is not available", Toast.LENGTH_SHORT).show();
         });
         if (!FileUtils.isOfflineDataExist(getFilesDir())) offlineText.setVisibility(View.GONE);
 

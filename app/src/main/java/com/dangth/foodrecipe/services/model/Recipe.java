@@ -26,6 +26,8 @@ public class Recipe implements Serializable, Parcelable {
     private String video_url;
     @SerializedName("recipes")
     private List<Recipe> recipes;
+    @SerializedName("slug")
+    public String slug;
 
     public boolean like = false;
     public Recipe() {
@@ -91,24 +93,25 @@ public class Recipe implements Serializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
-        dest.writeList(this.instructions);
+        dest.writeTypedList(this.instructions);
         dest.writeString(this.name);
         dest.writeTypedList(this.sections);
         dest.writeString(this.thumbnail_url);
         dest.writeString(this.video_url);
         dest.writeTypedList(this.recipes);
+        dest.writeString(this.slug);
         dest.writeByte(this.like ? (byte) 1 : (byte) 0);
     }
 
     protected Recipe(Parcel in) {
         this.id = in.readInt();
-        this.instructions = new ArrayList<Instruction>();
-        in.readList(this.instructions, Instruction.class.getClassLoader());
+        this.instructions = in.createTypedArrayList(Instruction.CREATOR);
         this.name = in.readString();
         this.sections = in.createTypedArrayList(Section.CREATOR);
         this.thumbnail_url = in.readString();
         this.video_url = in.readString();
         this.recipes = in.createTypedArrayList(Recipe.CREATOR);
+        this.slug = in.readString();
         this.like = in.readByte() != 0;
     }
 

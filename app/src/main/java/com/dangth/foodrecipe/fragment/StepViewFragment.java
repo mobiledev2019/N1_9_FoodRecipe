@@ -56,12 +56,15 @@ public class StepViewFragment extends Fragment {
         TextView instructionText = view.findViewById(R.id.stepText);
         ImageView thumbnail = view.findViewById(R.id.coverImageView);
         ProgressBar progressBar = view.findViewById(R.id.progressBar);
-        thumbnail.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-
         Bundle bundle = getArguments();
         Instruction instruction;
         if (bundle!=null && getContext() != null && getActivity() != null) {
+            if (((StepViewActivity) getActivity()).isNetworkAvailable()){
+                progressBar.setVisibility(View.VISIBLE);
+            }
+            else {
+                progressBar.setVisibility(View.GONE);
+            }
             int pos = bundle.getInt(STF_KEY_POS);
             instruction = ((StepViewActivity) getActivity()).instructionList.get(pos);
             instructionText.setText(instruction.getDisplayText());

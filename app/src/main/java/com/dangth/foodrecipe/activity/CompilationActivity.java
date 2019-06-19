@@ -1,5 +1,9 @@
 package com.dangth.foodrecipe.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,32 +60,34 @@ public class CompilationActivity extends AppCompatActivity {
 
         /* ProgressBar */
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+        if (isNetworkAvailable()) progressBar.setVisibility(View.VISIBLE);
 
         /* TextView title */
         TextView tvTitleCollapse = findViewById(R.id.tvTitle);
         tvTitleCollapse.setText(compilation.getName());
 
         /* ExoPlayer */
-        playerView = findViewById(R.id.videoSurfaceContainer);
-        playerView.setControllerAutoShow(false);
-        player = ExoPlayerFactory.newSimpleInstance(this);
-        DataSource.Factory dataFactory = new DefaultDataSourceFactory(this,  Util.getUserAgent(this, "FoodRecipe"));
-        HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataFactory).createMediaSource(Uri.parse(compilation.getVideo_url()));
-        player.prepare(mediaSource,true, false);
-        player.setPlayWhenReady(true);
-        player.addListener(new Player.EventListener() {
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (playbackState == Player.STATE_READY) {
-                    if (thumbnail.getVisibility() == View.VISIBLE) {
-                        thumbnail.setVisibility(View.GONE);
-                        progressBar.setVisibility(View.GONE);
+        if (isNetworkAvailable()) {
+            playerView = findViewById(R.id.videoSurfaceContainer);
+            playerView.setControllerAutoShow(false);
+            player = ExoPlayerFactory.newSimpleInstance(this);
+            DataSource.Factory dataFactory = new DefaultDataSourceFactory(this,  Util.getUserAgent(this, "FoodRecipe"));
+            HlsMediaSource mediaSource = new HlsMediaSource.Factory(dataFactory).createMediaSource(Uri.parse(compilation.getVideo_url()));
+            player.prepare(mediaSource,true, false);
+            player.setPlayWhenReady(true);
+            player.addListener(new Player.EventListener() {
+                @Override
+                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                    if (playbackState == Player.STATE_READY) {
+                        if (thumbnail.getVisibility() == View.VISIBLE) {
+                            thumbnail.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                        }
                     }
                 }
-            }
-        });
-        playerView.setPlayer(player);
+            });
+            playerView.setPlayer(player);
+        }
 
         /* RecyclerView */
 
@@ -118,18 +124,37 @@ public class CompilationActivity extends AppCompatActivity {
 
             }
         });
+
+        /* shareButton */
+
+        ImageView shareBtn = findViewById(R.id.shareButton);
+        shareBtn.setOnClickListener(view -> {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "https://tasty.co/compilation/" + compilation.slug);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     @Override
     public void finish() {
         super.finish();
-        player.release();
+        if (player != null) player.release();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        player.setPlayWhenReady(false);
-        playerView.showController();
+        if (player != null && playerView != null) {
+            player.setPlayWhenReady(false);
+            playerView.showController();
+        }
     }
 }
